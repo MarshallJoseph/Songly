@@ -4,22 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/button_songly"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/visualizer_button_main"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="225dp"
+        android:background="@color/button_visualizer"
         android:text="@string/visualizer"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:shadowColor="#FFFFFF"
+        android:shadowRadius="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/songly_button_main"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="225dp"
+        android:background="@color/button_songly"
         android:text="@string/songly"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:shadowColor="#FFFFFF"
+        android:shadowRadius="10"
         app:layout_constraintBottom_toTopOf="@+id/studio_button_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,9 +40,15 @@
 
     <Button
         android:id="@+id/studio_button_main"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
         android:layout_height="225dp"
+        android:background="@color/button_studio"
         android:text="@string/studio"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:shadowColor="#FFFFFF"
+        android:shadowRadius="10"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
