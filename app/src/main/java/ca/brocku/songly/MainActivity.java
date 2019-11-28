@@ -2,10 +2,15 @@ package ca.brocku.songly;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+
+    Button visualizer, songly, studio;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +27,33 @@ public class MainActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
 
+        // Initialize the three menu buttons
+        visualizer = (Button) findViewById(R.id.visualizer_button_main);
+        songly = (Button) findViewById(R.id.songly_button_main);
+        studio = (Button) findViewById(R.id.studio_button_main);
 
+        // Set on click listeners for the three menu buttons
+        visualizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), VisualizerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        songly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        studio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 
