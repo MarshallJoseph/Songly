@@ -10,7 +10,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     Button visualizer, songly, studio;
-
+    // make change
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
