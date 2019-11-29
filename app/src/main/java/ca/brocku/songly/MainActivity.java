@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         songly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,17 +47,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         studio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(v.getContext(), StudioActivity.class);
+                startActivity(intent);
             }
         });
 
     }
 
-    private void test() {
-        // Hello world
-    }
 }
