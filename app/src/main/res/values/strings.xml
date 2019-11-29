@@ -3,4 +3,7 @@
     <string name="visualizer">VISUALIZER</string>
     <string name="songly">SONGLY</string>
     <string name="studio">STUDIO</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
 </resources>
