@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         songly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(v.getContext(), SonglyActivity.class);
+                startActivity(intent);
             }
         });
 
