@@ -5,26 +5,19 @@
     android:layout_height="match_parent"
     android:background="@color/button_visualizer">
 
-    <ListView
-        android:id="@+id/song_list_visualizer"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/play_button_visualizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="161dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="162dp"
         android:onClick="play"
         android:text="@string/play"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/song_list_visualizer" />
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
 
     <Button
         android:id="@+id/pause_button_visualizer"
@@ -51,5 +44,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pause_button_visualizer" />
+
+    <Button
+        android:id="@+id/select_song_button_visualizer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="148dp"
+        android:text="@string/select_song"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stop_button_visualizer" />
+
+    <ca.brocku.songly.vis.type.Bar
+        android:id="@+id/visualizer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
