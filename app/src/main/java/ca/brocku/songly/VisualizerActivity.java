@@ -2,16 +2,15 @@ package ca.brocku.songly;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,7 +26,7 @@ public class VisualizerActivity extends AppCompatActivity {
     };
 
     MediaPlayer mp;
-    final String[] listContent = {"Colorado", "You Got It"};
+    final String[] songNames = {"'Colorado' - by KOTA The Friend", "'You Got It' - by Vory"};
     final int[] resID = {R.raw.colorado, R.raw.you_got_it};
     Button selectSongButton;
 
@@ -79,7 +78,7 @@ public class VisualizerActivity extends AppCompatActivity {
         dialog.setTitle("Select A Song");
 
         // Initialize adapter
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listContent);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songNames);
 
         // Initializes ListView for song list
         ListView songList = (ListView) dialog.findViewById(R.id.song_list_visualizer);
