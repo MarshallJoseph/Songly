@@ -1,15 +1,24 @@
 package ca.brocku.songly;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.media.TimedText;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.Closeable;
 import java.io.File;
@@ -18,20 +27,51 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SonglyActivity extends AppCompatActivity implements MediaPlayer.OnTimedTextListener{
+public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnTimedTextListener{
 
+    MediaPlayer player; //For instrumental plavback
+    MediaPlayer rPlayer; //For playing recordings
+
+    //For Recording
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private static String fileName = null;
+    MediaRecorder recorder = null;
+
+    // Requesting permission to RECORD_AUDIO
+    private boolean permissionToRecordAccepted = false;
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+
+    //For TimedText
+    int currTrackIndex;
     private static Handler handler = new Handler();
     TextView lyrics;
-    ImageView sButt,plButt,paButt,rButt;
-    MediaPlayer player;
 
-    int currTrackIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_songly);
+        setContentView(R.layout.activity_studio);
         lyrics = (TextView) findViewById(R.id.lyrics);
         player = MediaPlayer.create(this, R.raw.never);
+
+        // Record to the external cache directory for visibility
+        fileName = getExternalCacheDir().getAbsolutePath();
+        fileName += "/recording.3gp";
+
+        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggle);
+
+        // Check if user has already allowed audio recording
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+                //If not, request permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.RECORD_AUDIO},
+                        200);
+
+        } else {
+            // Permission has already been granted
+        }
+        //For selecting and assigning subtitles
         try {
             player.addTimedTextSource(getSubtitleFile(R.raw.neverlyrics), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
             int textTrackIndex = findTrackIndexFor(
@@ -45,9 +85,22 @@ public class SonglyActivity extends AppCompatActivity implements MediaPlayer.OnT
             e.printStackTrace();
         }
 
-        sButt = findViewById(R.id.stop);
-        plButt = findViewById(R.id.play);
-        rButt = findViewById(R.id.restart);
+    }
+
+    //For handling permission request response
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+        if (!permissionToRecordAccepted ){
+            lyrics.setText("Please approve recording permission before continuing");
+            finish();
+        }
+
     }
     //Finds index needed to pair TimedText with
     private int findTrackIndexFor(int mediaTrackType, MediaPlayer.TrackInfo[] trackInfo) {
@@ -115,20 +168,14 @@ public class SonglyActivity extends AppCompatActivity implements MediaPlayer.OnT
         lyrics.setText(l);
     }
 
-    public void play (View v) {
-        if (player != null) {
-            player.start();
-        }
-    }
-
-    public void stop (View v) {
-        stopPlayer();
-    }
-
     private void stopPlayer() {
         if (player != null) {
             player.release();
             player = null;
+        }
+        if (rPlayer != null){
+            rPlayer.release();
+            rPlayer = null;
         }
     }
 
@@ -136,25 +183,58 @@ public class SonglyActivity extends AppCompatActivity implements MediaPlayer.OnT
     protected void onStop() {
         super.onStop();
         stopPlayer();
+        stopRecording();
     }
 
-    public void restart(View v){
-        if (player != null)
-            stopPlayer();
-        player = MediaPlayer.create(this, R.raw.never);
-        try {
-            player.addTimedTextSource(getSubtitleFile(R.raw.neverlyrics), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
-            int textTrackIndex = findTrackIndexFor(
-                    MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, player.getTrackInfo());
-            if (textTrackIndex >= 0) {
-                currTrackIndex = textTrackIndex;
-                player.selectTrack(textTrackIndex);
+    //Studio Mode recording methods
+    public void toggleRecording(View v) {
+        if(recorder==null) {
+            recorder = new MediaRecorder();
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setOutputFile(fileName);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+            try {
+                recorder.prepare();
+            } catch (IOException e) {
+                Log.e("AudioRecordTest", "prepare() failed");
             }
-            player.setOnTimedTextListener(this);
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            recorder.start();
+            if (player != null) {
+                player.start();
+            }
         }
-        player.start();
+        else{
+            stopRecording();
+            stopPlayer();
+        }
+    }
+
+    private void stopRecording() {
+        if(recorder!=null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
+    }
+
+    public void toggleRecordedAudio(View v){
+        if(rPlayer!=null){
+            rPlayer.stop();
+            rPlayer.release();
+            rPlayer = null;
+        }
+        else {
+            rPlayer = new MediaPlayer();
+            try {
+                rPlayer.setDataSource(fileName);
+                rPlayer.prepare();
+                rPlayer.start();
+            } catch (IOException e) { //Does nothing
+            }
+        }
 
     }
 }
