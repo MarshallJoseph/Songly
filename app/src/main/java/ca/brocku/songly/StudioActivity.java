@@ -51,7 +51,7 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_studio);
         lyrics = (TextView) findViewById(R.id.lyrics);
-        player = MediaPlayer.create(this, R.raw.never);
+        player = MediaPlayer.create(this, R.raw.neverinst);
 
         // Record to the external cache directory for visibility
         fileName = getExternalCacheDir().getAbsolutePath();
