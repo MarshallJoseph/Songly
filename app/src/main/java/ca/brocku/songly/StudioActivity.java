@@ -66,8 +66,6 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         fileName = getExternalCacheDir().getAbsolutePath();
         fileName += "/recording.3gp";
 
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.toggle);
-
         //For selecting and assigning subtitles
         try {
             player.addTimedTextSource(getSubtitleFile(R.raw.neverlyrics), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
@@ -218,5 +216,11 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
             }
         }
 
+    }
+
+    public void play(View view) {
+    }
+
+    public void stop(View view) {
     }
 }

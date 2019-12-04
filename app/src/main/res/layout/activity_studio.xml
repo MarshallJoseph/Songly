@@ -8,50 +8,137 @@
     android:orientation="vertical"
     tools:context=".StudioActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="STUDIO"
-        android:textColor="#FFFFFF"
-        android:textSize="48dp"
-        android:shadowColor="#FFFFFF"
-        android:shadowRadius="10"
-        android:layout_weight="1"
-        android:layout_gravity="center" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="SONGLY"
+            android:textColor="#FFFFFF"
+            android:textSize="48dp"
+            android:shadowColor="#FFFFFF"
+            android:shadowRadius="10"
+            android:id="@+id/songly_title"/>
+
+        <ImageButton
+            android:id="@+id/songly_song_select"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignLeft="@id/songly_title"
+            android:layout_marginLeft="-104dp"
+            android:background="@drawable/menu" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_weight="4"
+        android:layout_height="80dp"
+        android:layout_weight="2"
         android:gravity="center"
         android:text=""
         android:textColor="#FFFFFF"
         android:textSize="48dp"
         android:layout_gravity="center"
         android:id="@+id/lyrics"/>
-
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="toggleRecordedAudio"
-        android:text="Play/pause recording"
-        android:backgroundTint="@color/black"
-        android:textColor="@color/white"
         android:layout_gravity="center"
+        android:gravity="center"
+        android:text="AUDIO EFFECTS"
+        android:textColor="#FFFFFF"
+        android:textSize="36dp"
         />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@drawable/customborder">
 
-    <ToggleButton
-        android:id="@+id/toggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/check"
-        android:layout_margin="30dp"
-        android:textOn=""
-        android:textOff=""
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:onClick="toggleRecording"/>
+        <CheckBox
+            android:id="@+id/switch1"
+            android:buttonTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="15dp"
+            android:text="Bass Boost"
+            android:textSize="28dp" />
+
+        <CheckBox
+            android:id="@+id/switch2"
+            android:buttonTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@+id/switch1"
+            android:text="Equalizer       "
+            android:textSize="28dp" />
+
+        <CheckBox
+            android:id="@+id/switch3"
+            android:buttonTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/switch1"
+            android:text="Acoustic"
+            android:textSize="28dp" />
+
+        <CheckBox
+            android:id="@+id/switch4"
+            android:buttonTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/switch1"
+            android:layout_marginLeft="60dp"
+            android:layout_toRightOf="@+id/switch3"
+            android:text="Loudness       "
+            android:textSize="28dp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="20dp">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:alpha="0.5"
+            android:id="@+id/play"
+            android:src="@drawable/play"
+            android:onClick="play" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/play"
+            android:alpha="0.5"
+            android:id="@+id/record"
+            android:src="@drawable/record"
+            android:onClick="toggleRecording"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/play"
+            android:alpha="0.5"
+            android:id="@+id/stop"
+            android:src="@drawable/stop"
+            android:onClick="stop"/>
+    </RelativeLayout>
 
 
 </LinearLayout>

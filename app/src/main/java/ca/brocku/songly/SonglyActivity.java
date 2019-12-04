@@ -221,4 +221,9 @@ public class SonglyActivity extends AppCompatActivity implements MediaPlayer.OnT
         }
         mp.start();
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopPlayer();
+    }
 }
