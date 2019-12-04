@@ -1,6 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/button_songly"
+    android:orientation="vertical"
+    tools:context=".SonglyActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="SONGLY"
+            android:textColor="#FFFFFF"
+            android:textSize="48dp"
+            android:shadowColor="#FFFFFF"
+            android:shadowRadius="10"
+            android:id="@+id/songly_title"/>
+
+        <ImageButton
+            android:id="@+id/songly_song_select"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignLeft="@id/songly_title"
+            android:layout_marginLeft="-104dp"
+            android:background="@drawable/menu" />
+    </RelativeLayout>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:text=""
+        android:textColor="#FFFFFF"
+        android:textSize="48dp"
+        android:layout_gravity="center"
+        android:id="@+id/lyrics"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="2">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:alpha="0.5"
+            android:id="@+id/stop"
+            android:src="@drawable/stop"
+            android:onClick="stop" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/stop"
+            android:alpha="0.5"
+            android:id="@+id/play"
+            android:src="@drawable/play"
+            android:onClick="play"/>
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/stop"
+            android:alpha="0.5"
+            android:id="@+id/restart"
+            android:src="@drawable/restart"
+            android:onClick="restart"/>
+    </RelativeLayout>
+
 
 </LinearLayout>

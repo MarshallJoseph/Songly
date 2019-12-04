@@ -9,53 +9,53 @@
         android:id="@+id/play_button_visualizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="162dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="200dp"
         android:onClick="play"
         android:text="@string/play"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:backgroundTint="@color/visualizer_buttons"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+        app:layout_constraintTop_toBottomOf="@+id/visualizer"
+        />
 
     <Button
         android:id="@+id/pause_button_visualizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="162dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="13dp"
         android:onClick="pause"
         android:text="@string/pause"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/play_button_visualizer" />
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintEnd_toStartOf="@+id/stop_button_visualizer"
+        app:layout_constraintStart_toEndOf="@+id/play_button_visualizer"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
 
     <Button
         android:id="@+id/stop_button_visualizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="162dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="60dp"
         android:onClick="stop"
         android:text="@string/stop"
+        android:backgroundTint="@color/visualizer_buttons"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pause_button_visualizer" />
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
 
     <Button
         android:id="@+id/select_song_button_visualizer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="148dp"
         android:text="@string/select_song"
+        android:backgroundTint="@color/visualizer_buttons"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stop_button_visualizer" />
+        app:layout_constraintTop_toBottomOf="@+id/pause_button_visualizer" />
 
     <ca.brocku.songly.vis.BarVisualizer
         android:id="@+id/visualizer"
@@ -65,22 +65,192 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/visualizer_background"/>
 
     <TextView
         android:id="@+id/visualizer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="124dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="125dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="98dp"
         android:shadowColor="#FFFFFF"
         android:shadowRadius="10"
         android:text="@string/visualizer"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_more_gap" />
+
+    <Button
+        android:id="@+id/button_colour_black"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_white"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_black"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_red"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/red"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_white"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_yellow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/yellow"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_red"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_green"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/green"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_yellow"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_blue"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/blue"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_green"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_purple"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/purple"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_blue"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_colour_pink"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/pink"
+        app:layout_constraintStart_toEndOf="@+id/button_colour_purple"
+        app:layout_constraintTop_toBottomOf="@+id/visualizer" />
+
+    <Button
+        android:id="@+id/button_more_bars"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="98dp"
+        android:text="@string/more_bars"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_colour_white" />
+
+    <Button
+        android:id="@+id/button_less_bars"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="108dp"
+        android:text="@string/less_bars"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_colour_green" />
+
+    <Button
+        android:id="@+id/button_more_gap"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="106dp"
+        android:text="@string/more_gap"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_more_bars" />
+
+    <Button
+        android:id="@+id/button_less_gap"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="115dp"
+        android:text="@string/less_gap"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_less_bars" />
+
+    <ImageView
+        android:layout_width="500dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toTopOf="@+id/button_colour_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_vis_bar" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="330dp"
+        android:layout_height="170dp"
+        android:background="@drawable/border"
+        app:layout_constraintBottom_toBottomOf="@+id/select_song_button_visualizer"
+        app:layout_constraintEnd_toEndOf="@+id/stop_button_visualizer"
+        app:layout_constraintStart_toStartOf="@+id/play_button_visualizer"
+        app:layout_constraintTop_toTopOf="@+id/pause_button_visualizer" />
+
+    <Button
+        android:id="@+id/button_vis_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/bar"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_vis_circle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="33dp"
+        android:text="@string/circle"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintEnd_toStartOf="@+id/button_vis_line"
+        app:layout_constraintStart_toEndOf="@+id/button_vis_bar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_vis_line"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="40dp"
+        android:text="@string/line"
+        android:backgroundTint="@color/visualizer_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

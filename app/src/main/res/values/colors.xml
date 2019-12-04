@@ -6,4 +6,16 @@
     <color name="button_visualizer">#2BDCFF</color>
     <color name="button_songly">#B14AFF</color>
     <color name="button_studio">#FF0033</color>
+    <color name="visualizer_background">#D2FAFF</color>
+    <color name="visualizer_buttons">#D2FAFF</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="blue">#0011FF</color>
+    <color name="green">#00FF00</color>
+    <color name="purple">#CC00FF</color>
+    <color name="pink">#FF00A1</color>
+    <color name="red">#FF0000</color>
+    <color name="yellow">#E5FF32</color>
+
 </resources>
