@@ -10,12 +10,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ca.brocku.songly.vis.type.Bar;
+import ca.brocku.songly.vis.BarVisualizer;
 
 public class VisualizerActivity extends AppCompatActivity {
 
@@ -48,7 +47,7 @@ public class VisualizerActivity extends AppCompatActivity {
 
 
         initialize();
-        final Bar bar = findViewById(R.id.visualizer);
+        final BarVisualizer bar = findViewById(R.id.visualizer);
         bar.visualizerSetup(mp.getAudioSessionId());
 
         selectSongButton = findViewById(R.id.select_song_button_visualizer);
@@ -70,7 +69,7 @@ public class VisualizerActivity extends AppCompatActivity {
         }
     }
 
-    public void selectSong (final Bar bar) {
+    public void selectSong (final BarVisualizer bar) {
 
         // Initialize dialog
         final Dialog dialog = new Dialog(this);

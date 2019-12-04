@@ -1,6 +1,7 @@
 package ca.brocku.songly.vis;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
@@ -8,25 +9,27 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-abstract public class AbstractVisualizer extends View {
+public class BarVisualizer extends View {
 
     protected byte[] bytes;
     protected Paint paint;
     protected Visualizer visualizer;
 
-    public AbstractVisualizer (Context c) {
+    private float numBars = 20;
+    private int gap = 1;
+
+
+    public BarVisualizer(Context c) {
         super(c);
     }
 
-    public AbstractVisualizer(Context context, @Nullable AttributeSet attrs) {
+    public BarVisualizer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
         init();
     }
 
-    public AbstractVisualizer(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BarVisualizer(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(attrs);
         init();
     }
 
@@ -43,10 +46,9 @@ abstract public class AbstractVisualizer extends View {
         visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
             @Override
             public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
-                AbstractVisualizer.this.bytes = waveform;
+                BarVisualizer.this.bytes = waveform;
                 invalidate();
             }
-
             @Override
             public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
 
@@ -55,10 +57,26 @@ abstract public class AbstractVisualizer extends View {
         visualizer.setEnabled(true);
     }
 
-    private void init(AttributeSet attributeSet) {
+    protected void init() {
         paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
     }
 
-    protected abstract void init();
+    @Override
+    protected void onDraw(Canvas canvas) {
+        // Source: GautamChibde/android-audio-visualizer
+        if (bytes != null) {
+            float barWidth = getWidth() / numBars;
+            float div = bytes.length / numBars;
+            paint.setStrokeWidth(barWidth - gap);
+            for (int i = 0; i< numBars; i++) {
+                int bytePosition = (int) Math.ceil(i*div);
+                int top = getHeight() + ((byte) (Math.abs(bytes[bytePosition]) + 128)) * getHeight() / 128;
+                float barX = (i * barWidth) + (barWidth / 2);
+                canvas.drawLine(barX, getHeight(), barX, top, paint);
+            }
+            super.onDraw(canvas);
+        }
+    }
 
 }
