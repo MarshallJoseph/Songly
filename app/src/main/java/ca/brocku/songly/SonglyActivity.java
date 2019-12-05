@@ -63,7 +63,7 @@ public class SonglyActivity extends AppCompatActivity implements MediaPlayer.OnT
         });
 
         sButt = findViewById(R.id.stop);
-        plButt = findViewById(R.id.play);
+        plButt = findViewById(R.id.studio_play);
         rButt = findViewById(R.id.restart);
     }
 

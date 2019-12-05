@@ -70,7 +70,7 @@
             android:layout_marginRight="20dp"
             android:layout_toLeftOf="@+id/stop"
             android:alpha="0.5"
-            android:id="@+id/play"
+            android:id="@+id/studio_play"
             android:src="@drawable/play"
             android:onClick="play"/>
 

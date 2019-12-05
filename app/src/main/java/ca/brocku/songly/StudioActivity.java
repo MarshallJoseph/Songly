@@ -1,24 +1,26 @@
 package ca.brocku.songly;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
+import android.app.Dialog;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.TimedText;
+import android.media.audiofx.AcousticEchoCanceler;
+import android.media.audiofx.BassBoost;
+import android.media.audiofx.Equalizer;
+import android.media.audiofx.LoudnessEnhancer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.io.Closeable;
 import java.io.File;
@@ -29,22 +31,24 @@ import java.io.OutputStream;
 
 public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnTimedTextListener{
 
-    MediaPlayer player; //For instrumental plavback
-    MediaPlayer rPlayer; //For playing recordings
+    MediaPlayer mp; //For instrumental plavback
+    MediaPlayer mpRecord; //For playing recordings
 
-    //For Recording
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static String fileName = null;
     MediaRecorder recorder = null;
 
-    // Requesting permission to RECORD_AUDIO
-    private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
-
     //For TimedText
     int currTrackIndex;
-    private static Handler handler = new Handler();
     TextView lyrics;
+    ImageButton studioSongSelect;
+    final String[] songNames = {"'Africa' - by Toto", "'All Star' - by Smash Mouth", "'Baby I'm Yours' - by Breakbot", "'Jukebox Hero' - by Foreigner", "'Never Gonna Give You Up' - by Rick Astley"};
+    final int[] resID = {R.raw.africainst, R.raw.allstarinst, R.raw.babyimyoursinst, R.raw.jukeboxinst, R.raw.neverinst};
+    final int[] lyricsID = {R.raw.africalyrics, R.raw.allstarlyrics, R.raw.babyimyourslyrics, R.raw.jukeboxlyrics, R.raw.neverlyrics};
+    int globalPosition;
+    ImageView stop, play;
+    CheckBox bassboost, equalizer, loudness, acoustic;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,25 +64,41 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         decorView.setSystemUiVisibility(uiOptions);
 
         lyrics = (TextView) findViewById(R.id.lyrics);
-        player = MediaPlayer.create(this, R.raw.neverinst);
+        mp = MediaPlayer.create(this, R.raw.neverinst);
 
         // Record to the external cache directory for visibility
         fileName = getExternalCacheDir().getAbsolutePath();
         fileName += "/recording.3gp";
 
-        //For selecting and assigning subtitles
-        try {
-            player.addTimedTextSource(getSubtitleFile(R.raw.neverlyrics), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
-            int textTrackIndex = findTrackIndexFor(
-                    MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, player.getTrackInfo());
-            if (textTrackIndex >= 0) {
-                currTrackIndex = textTrackIndex;
-                player.selectTrack(textTrackIndex);
+        stop = (ImageView) findViewById(R.id.studio_stop);
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopPlayer();
             }
-            player.setOnTimedTextListener(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+
+        play = (ImageView) findViewById(R.id.studio_play);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playAudio();
+                playRecordedAudio();
+            }
+        });
+
+        studioSongSelect = (ImageButton) findViewById(R.id.studio_song_select);
+        studioSongSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectSong();
+            }
+        });
+
+        bassboost = (CheckBox) findViewById(R.id.switch_bassboost);
+        equalizer = (CheckBox) findViewById(R.id.switch_equalizer);
+        loudness = (CheckBox) findViewById(R.id.switch_loudness);
+        acoustic = (CheckBox) findViewById(R.id.switch_acoustic);
     }
 
     //Finds index needed to pair TimedText with
@@ -115,6 +135,53 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         return "";
     }
 
+    private void selectSong() {
+        // Initialize dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.song_list);
+        dialog.setTitle("Select A Song");
+
+        // Initialize adapter
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songNames);
+
+        // Initializes ListView for song list
+        ListView songList = (ListView) dialog.findViewById(R.id.song_list_visualizer);
+
+        // Set listeners for the song list
+        songList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (mp != null) {
+                    stopPlayer();
+                }
+                if (mp == null) {
+                    mp = MediaPlayer.create(view.getContext(), resID[position]);
+                }
+                try {
+                    mp.addTimedTextSource(getSubtitleFile(lyricsID[position]), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
+                    int textTrackIndex = findTrackIndexFor(
+                            MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, mp.getTrackInfo());
+                    if (textTrackIndex >= 0) {
+                        currTrackIndex = textTrackIndex;
+                        mp.selectTrack(textTrackIndex);
+                    }
+                    mp.setOnTimedTextListener((MediaPlayer.OnTimedTextListener) view.getContext());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                globalPosition = position;
+                dialog.dismiss();
+            }
+
+        });
+
+        // Adds adapter to song list
+        songList.setAdapter(adapter);
+
+        // Display dialog
+        dialog.show();
+    }
+
     //A method for copying files
     private void copyFile(InputStream inputStream, OutputStream outputStream)
             throws IOException {
@@ -148,13 +215,13 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
     }
 
     private void stopPlayer() {
-        if (player != null) {
-            player.release();
-            player = null;
+        if (mp != null) {
+            mp.release();
+            mp = null;
         }
-        if (rPlayer != null){
-            rPlayer.release();
-            rPlayer = null;
+        if (mpRecord != null){
+            mpRecord.release();
+            mpRecord = null;
         }
     }
 
@@ -173,16 +240,14 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
             recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             recorder.setOutputFile(fileName);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
             try {
                 recorder.prepare();
             } catch (IOException e) {
                 Log.e("AudioRecordTest", "prepare() failed");
             }
-
             recorder.start();
-            if (player != null) {
-                player.start();
+            if (mp != null) {
+                mp.start();
             }
         }
         else{
@@ -199,28 +264,40 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         }
     }
 
-    public void toggleRecordedAudio(View v){
-        if(rPlayer!=null){
-            rPlayer.stop();
-            rPlayer.release();
-            rPlayer = null;
+    public void playRecordedAudio(){
+        if(mpRecord !=null){
+            mpRecord.stop();
+            mpRecord.release();
+            mpRecord = null;
         }
         else {
-            rPlayer = new MediaPlayer();
+            mpRecord = new MediaPlayer();
             try {
-                rPlayer.setDataSource(fileName);
-                rPlayer.setVolume(1.0f,1.0f);
-                rPlayer.prepare();
-                rPlayer.start();
-            } catch (IOException e) { //Does nothing
-            }
+                mpRecord.setDataSource(fileName);
+                mpRecord.setVolume(1.0f,1.0f);
+                mpRecord.prepare();
+                mpRecord.start();
+            } catch (IOException e) {}
         }
-
     }
 
-    public void play(View view) {
+    public void playAudio() {
+        if (bassboost.isChecked()) {
+            BassBoost bassBoost = new BassBoost(0, globalPosition);
+            mp.attachAuxEffect(bassBoost.getId());
+        }
+        if (equalizer.isChecked()) {
+            Equalizer equalizer = new Equalizer(0, globalPosition);
+            mp.attachAuxEffect(equalizer.getId());
+        }
+        if (loudness.isChecked()) {
+            LoudnessEnhancer loudnessEnhancer = new LoudnessEnhancer(globalPosition);
+            mp.attachAuxEffect(loudnessEnhancer.getId());
+        }
+        if (acoustic.isChecked()) {
+            // No implementation
+        }
     }
 
-    public void stop(View view) {
-    }
+
 }

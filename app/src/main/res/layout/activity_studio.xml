@@ -29,7 +29,7 @@
             android:id="@+id/songly_title"/>
 
         <ImageButton
-            android:id="@+id/songly_song_select"
+            android:id="@+id/studio_song_select"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_alignLeft="@id/songly_title"
@@ -64,7 +64,7 @@
         android:background="@drawable/customborder">
 
         <CheckBox
-            android:id="@+id/switch1"
+            android:id="@+id/switch_bassboost"
             android:buttonTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -73,33 +73,33 @@
             android:textSize="28dp" />
 
         <CheckBox
-            android:id="@+id/switch2"
+            android:id="@+id/switch_equalizer"
             android:buttonTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/switch1"
+            android:layout_toRightOf="@+id/switch_bassboost"
             android:text="Equalizer       "
             android:textSize="28dp" />
 
         <CheckBox
-            android:id="@+id/switch3"
+            android:id="@+id/switch_acoustic"
             android:buttonTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_height="40dp"
-            android:layout_below="@+id/switch1"
+            android:layout_below="@+id/switch_bassboost"
             android:text="Acoustic"
             android:textSize="28dp" />
 
         <CheckBox
-            android:id="@+id/switch4"
+            android:id="@+id/switch_loudness"
             android:buttonTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_below="@+id/switch1"
+            android:layout_below="@+id/switch_bassboost"
             android:layout_marginLeft="60dp"
-            android:layout_toRightOf="@+id/switch3"
+            android:layout_toRightOf="@+id/switch_acoustic"
             android:text="Loudness       "
             android:textSize="28dp" />
     </RelativeLayout>
@@ -115,15 +115,15 @@
             android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:alpha="0.5"
-            android:id="@+id/play"
+            android:id="@+id/studio_play"
             android:src="@drawable/play"
-            android:onClick="play" />
+             />
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@+id/play"
+            android:layout_toLeftOf="@+id/studio_play"
             android:alpha="0.5"
             android:id="@+id/record"
             android:src="@drawable/record"
@@ -133,11 +133,11 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@+id/play"
+            android:layout_toRightOf="@+id/studio_play"
             android:alpha="0.5"
-            android:id="@+id/stop"
+            android:id="@+id/studio_stop"
             android:src="@drawable/stop"
-            android:onClick="stop"/>
+            />
     </RelativeLayout>
 
 
