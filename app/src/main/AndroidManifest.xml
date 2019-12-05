@@ -10,16 +10,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VisualizerActivity"></activity>
-        <activity android:name=".SonglyActivity"></activity>
-        <activity android:name=".StudioActivity"></activity>
+        <activity android:name=".VisualizerActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".SonglyActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".StudioActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -64,7 +64,22 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         decorView.setSystemUiVisibility(uiOptions);
 
         lyrics = (TextView) findViewById(R.id.lyrics);
-        mp = MediaPlayer.create(this, R.raw.neverinst);
+        mp = MediaPlayer.create(this, R.raw.africainst);
+        globalPosition = 0;
+
+        // initialize first song lyrics before song selected
+        try {
+            mp.addTimedTextSource(getSubtitleFile(lyricsID[0]), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
+            int textTrackIndex = findTrackIndexFor(
+                    MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, mp.getTrackInfo());
+            if (textTrackIndex >= 0) {
+                currTrackIndex = textTrackIndex;
+                mp.selectTrack(textTrackIndex);
+            }
+            mp.setOnTimedTextListener((MediaPlayer.OnTimedTextListener) this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Record to the external cache directory for visibility
         fileName = getExternalCacheDir().getAbsolutePath();
@@ -83,7 +98,6 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
             @Override
             public void onClick(View v) {
                 playAudio();
-                playRecordedAudio();
             }
         });
 
@@ -151,6 +165,7 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
         songList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                globalPosition = position;
                 if (mp != null) {
                     stopPlayer();
                 }
@@ -169,7 +184,6 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                globalPosition = position;
                 dialog.dismiss();
             }
 
@@ -215,13 +229,14 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
     }
 
     private void stopPlayer() {
+        if (recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
         if (mp != null) {
             mp.release();
-            mp = null;
-        }
-        if (mpRecord != null){
-            mpRecord.release();
-            mpRecord = null;
+            mp = MediaPlayer.create(this, resID[globalPosition]);
         }
     }
 
@@ -229,7 +244,6 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
     protected void onStop() {
         super.onStop();
         stopPlayer();
-        stopRecording();
     }
 
     //Studio Mode recording methods
@@ -251,52 +265,53 @@ public class StudioActivity extends AppCompatActivity implements MediaPlayer.OnT
             }
         }
         else{
-            stopRecording();
             stopPlayer();
         }
     }
 
-    private void stopRecording() {
-        if(recorder!=null) {
-            recorder.stop();
-            recorder.release();
-            recorder = null;
-        }
-    }
 
-    public void playRecordedAudio(){
-        if(mpRecord !=null){
+    public void playAudio() {
+
+        if (mpRecord != null){
             mpRecord.stop();
             mpRecord.release();
             mpRecord = null;
         }
-        else {
-            mpRecord = new MediaPlayer();
-            try {
-                mpRecord.setDataSource(fileName);
-                mpRecord.setVolume(1.0f,1.0f);
-                mpRecord.prepare();
-                mpRecord.start();
-            } catch (IOException e) {}
-        }
-    }
 
-    public void playAudio() {
+        mpRecord = new MediaPlayer();
+
+        try {
+            mpRecord.setDataSource(fileName);
+            mpRecord.setVolume(1.0f,1.0f);
+            mp.setVolume(0.3f, 0.3f);
+            mpRecord.prepare();
+        } catch (IOException e) {}
+
         if (bassboost.isChecked()) {
-            BassBoost bassBoost = new BassBoost(0, globalPosition);
-            mp.attachAuxEffect(bassBoost.getId());
+            BassBoost bassBoost = new BassBoost(0, resID[globalPosition]);
+            short strength = 500;
+            bassBoost.setStrength(strength);
+            bassBoost.setEnabled(true);
         }
+
         if (equalizer.isChecked()) {
-            Equalizer equalizer = new Equalizer(0, globalPosition);
-            mp.attachAuxEffect(equalizer.getId());
+            Equalizer equalizer = new Equalizer(0, resID[globalPosition]);
+            equalizer.setEnabled(true);
         }
+
         if (loudness.isChecked()) {
-            LoudnessEnhancer loudnessEnhancer = new LoudnessEnhancer(globalPosition);
-            mp.attachAuxEffect(loudnessEnhancer.getId());
+            LoudnessEnhancer loudnessEnhancer = new LoudnessEnhancer(resID[globalPosition]);
+            mp.setVolume(0.7f, 0.7f);
+            loudnessEnhancer.setTargetGain(30);
+            loudnessEnhancer.setEnabled(true);
         }
+
         if (acoustic.isChecked()) {
             // No implementation
         }
+
+        mp.start();
+        mpRecord.start();
     }
 
 
